@@ -1,0 +1,19 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+            android:defaultValue="false"
+            android:title="Korzystaj z sieci prywatnej" android:key="private_network_usage"/>
+    <EditTextPreference
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/private_network_address" android:key="target_private_net_address"/>
+    <EditTextPreference
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/public_network_address" android:key="target_public_net_address"/>
+    <ListPreference
+            android:title="Procent wysyłanego zdjęcia"
+            android:defaultValue="0.1"
+            android:entries="@array/pref_picture_size"
+            android:entryValues="@array/pref_picture_size_values" android:key="picture_size"
+            android:inputType="number" android:id="@+id/picture_percent_pref"/>
+</PreferenceScreen>
