@@ -132,8 +132,8 @@ class WareServiceImpl(private val context : Context ) : WareService {
 
     companion object{
         const val RESPONSE_OK = 0
-        private val JSON_ERROR_CODE = "errCode"
-        private val JSON_ERROR_DESC = "errOpis"
+        private val JSON_ERROR_CODE = "retCode"
+        private val JSON_ERROR_DESC = "retOpis"
 
         const val MAX_PERCENT = 100f
         const val MIN_PERCENT = 10f

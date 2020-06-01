@@ -70,7 +70,7 @@ class LoginServiceImpl(private val context : Context) : LoginService {
     }
 
     companion object{
-        private val JSON_ERROR_CODE = "errCode"
+        private val JSON_ERROR_CODE = "retCode"
         private val USER_ID = "userID"
         private val TOKEN = "token"
 
