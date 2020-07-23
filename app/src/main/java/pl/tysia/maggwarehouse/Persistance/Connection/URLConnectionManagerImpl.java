@@ -2,15 +2,14 @@ package pl.tysia.maggwarehouse.Persistance.Connection;
 
 
 import android.content.Context;
-import android.preference.PreferenceManager;
-import pl.tysia.maggwarehouse.BusinessLogic.NetAddressManager;
+
+import pl.tysia.maggwarehouse.Persistance.NetAddressManager;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 

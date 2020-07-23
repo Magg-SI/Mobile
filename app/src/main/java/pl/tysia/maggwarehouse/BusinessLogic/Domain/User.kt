@@ -3,7 +3,7 @@ package pl.tysia.maggwarehouse.BusinessLogic.Domain
 import android.content.Context
 import android.preference.PreferenceManager
 
-class User(var login: String) {
+data class User(var login: String) {
     var password : String? = null
     var type : UserType? = null
     var locker : String? = null

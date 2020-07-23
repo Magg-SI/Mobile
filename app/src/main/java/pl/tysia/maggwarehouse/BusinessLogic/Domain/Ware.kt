@@ -5,7 +5,7 @@ import pl.tysia.maggwarehouse.Presentation.PresentationLogic.CatalogAdapter.ICat
 import pl.tysia.maggwarehouse.R
 import java.io.Serializable
 
-class Ware(var name: String) : ICatalogable, Serializable {
+data class Ware(var name: String) : ICatalogable, Serializable {
     private var quantityOrdered = 0
     private var quantityTaken = 0
 
@@ -14,14 +14,19 @@ class Ware(var name: String) : ICatalogable, Serializable {
     var imageBitmap : Bitmap? = null;
     var qrCode : String? = null
     var index : String? = "index"
+    var location : String? = null
+    var price : Double? = null
+    var availabilities : List<Availability>? = null
 
     var hasPhoto = false
 
 
-    constructor(qrCode : String, id : Int, index : String, name: String, hasPhoto : Boolean ) : this(name){
+    constructor(qrCode : String, id : Int, index : String, name: String, hasPhoto : Boolean,  location : String, price : Double) : this(name){
         this.qrCode = qrCode
         this.id = id
         this.index = index
+        this.location = location
+        this.price = price
 
         this.hasPhoto = hasPhoto
     }
@@ -30,27 +35,12 @@ class Ware(var name: String) : ICatalogable, Serializable {
         return name
     }
 
+    override fun getImage(): Bitmap? {
+        return null
+    }
+
     override fun getShortDescription(): String {
         return "Short description"
     }
 
-    override fun getImageResource(): Int {
-        return R.drawable.picture
-    }
-
-    override fun getQuantityOrdered(): Int {
-        return quantityOrdered
-    }
-
-    override fun setQuantityOrdered(quantityOrdered: Int) {
-        this.quantityOrdered = quantityOrdered
-    }
-
-    override fun getQuantityTaken(): Int {
-        return quantityTaken
-    }
-
-    override fun setQuantityTaken(quantityTaken: Int) {
-        this.quantityTaken = quantityTaken
-    }
 }

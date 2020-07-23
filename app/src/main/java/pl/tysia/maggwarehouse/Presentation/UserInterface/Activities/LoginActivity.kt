@@ -26,10 +26,9 @@ import android.view.Menu
 import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.nav_header_main.*
 import pl.tysia.maggwarehouse.R
 import pl.tysia.maggwarehouse.BusinessLogic.Domain.User
-import pl.tysia.maggwarehouse.BusinessLogic.NetAddressManager
+import pl.tysia.maggwarehouse.Persistance.NetAddressManager
 import pl.tysia.maggwarehouse.Persistance.LoginService
 import pl.tysia.maggwarehouse.Persistance.LoginServiceImpl
 
@@ -140,7 +139,6 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
     }
 
     private fun isEmailValid(login: String): Boolean {
-        //TODO: Replace this with your own logic
         return true
     }
 

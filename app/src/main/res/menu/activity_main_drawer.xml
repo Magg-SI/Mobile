@@ -3,21 +3,14 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single" android:visible="false">
         <item
-                android:id="@+id/nav_catalog"
-                android:title="Katalog produktów"/>
-    </group>
-
-    <item android:title="Użytkownik">
-        <menu>
-            <item
-                    android:id="@+id/nav_logout"
-                    android:title="Wyloguj"/>
-            <item
-                    android:id="@+id/nav_change_password"
-                    android:title="Zmień hasło"/>
-        </menu>
-    </item>
+                android:id="@+id/nav_locations"
+                android:title="Skanuj lokalizację" />
+        <item
+                android:id="@+id/nav_collect"
+                android:title="Zamówienia" />
+        <item
+                android:id="@+id/nav_product_info"
+                android:title="Znajdź produkt" />
 
 </menu>

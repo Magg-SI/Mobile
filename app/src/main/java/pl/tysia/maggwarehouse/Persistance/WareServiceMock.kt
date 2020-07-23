@@ -12,6 +12,14 @@ class WareServiceMock : WareService {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun sendWare(wareCode: String, locationCode: String, token: String): Boolean {
+        return true
+    }
+
+    override fun testShelf(locationCode: String, token: String): Boolean {
+        return true
+    }
+
     override fun getWare(qrCode: String, token: String): Ware {
         return Ware("przykładowy towar")
     }

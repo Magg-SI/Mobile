@@ -36,7 +36,9 @@
     <string name="product_added_toast">Towar dodany pomyślnie</string>
     <string name="product_couldnt_be_added_toast">Nie udało się dodać produktu</string>
     <string name="product_couldnt_be_found_toast_with_reason">Nie udało się znaleźć produktu - %1$s</string>
-    <string name="touch_to_scan">Dotknij by zacząć skanowanie</string>
+    <string name="shelf_couldnt_be_found_toast_with_reason">Nie udało się znaleźć półki - %1$s</string>
+    <string name="product_couldnt_be_send">Nie udało się wysłać produktu - %1$s</string>
+    <string name="touch_to_scan">Dotknij by zacząć skanowanie produktu</string>
     <string name="title_activity_settings">Ustawienia</string>
 
     <!-- Strings related to Settings -->
@@ -79,7 +81,6 @@
         <item>0.2</item>
         <item>0.1</item>
     </string-array>
-
 
 
 </resources>

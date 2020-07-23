@@ -10,6 +10,7 @@ import pl.tysia.maggwarehouse.Persistance.Connection.URLConnectionManagerImpl
 import pl.tysia.maggwarehouse.resizeBitmap
 import java.io.ByteArrayOutputStream
 import android.graphics.BitmapFactory
+import pl.tysia.maggwarehouse.BusinessLogic.Domain.Availability
 import java.io.IOException
 
 
@@ -37,12 +38,65 @@ class WareServiceImpl(private val context : Context ) : WareService {
         }
     }
 
+
     private fun getPhotoGetterJSON(id: Int, token:String): String{
         val jsonObj = JSONObject()
 
         jsonObj.put("func", "getFoto")
         jsonObj.put("token",  token)
         jsonObj.put("towID" , id)
+
+        return jsonObj.toString()
+    }
+
+
+
+    @Throws (IOException::class)
+    override fun testShelf(locationCode: String, token: String): Boolean {
+        connectionManager.setConnection(connectionURL)
+        val res = connectionManager.post(getTestShelfJSON(locationCode, token))
+        connectionManager.closeConnection()
+
+        val jsonRes = JSONObject(res)
+        val resCode = jsonRes.getInt(JSON_ERROR_CODE)
+
+        lastError = jsonRes.getString(JSON_ERROR_DESC)
+
+        return resCode == RESPONSE_OK
+    }
+
+    private fun getTestShelfJSON(locationCode: String, token: String): String{
+        val jsonObj = JSONObject()
+
+        jsonObj.put("func",  "testPlace")
+        jsonObj.put("token",  token)
+        jsonObj.put("localization",  locationCode)
+
+        return jsonObj.toString()
+    }
+
+    @Throws (IOException::class)
+    override fun sendWare(wareCode: String, locationCode: String, token: String): Boolean {
+        connectionManager.setConnection(connectionURL)
+        val res = connectionManager.post(getSendWareJSON(wareCode, locationCode, token))
+        connectionManager.closeConnection()
+
+        val jsonRes = JSONObject(res)
+        val resCode = jsonRes.getInt(JSON_ERROR_CODE)
+
+        lastError = jsonRes.getString(JSON_ERROR_DESC)
+
+        return resCode == RESPONSE_OK
+
+    }
+
+    private fun getSendWareJSON(wareCode: String, locationCode: String, token: String): String{
+        val jsonObj = JSONObject()
+
+        jsonObj.put("func",  "addPlace")
+        jsonObj.put("token",  token)
+        jsonObj.put("localization",  locationCode)
+        jsonObj.put("towQR",  wareCode)
 
         return jsonObj.toString()
     }
@@ -57,12 +111,30 @@ class WareServiceImpl(private val context : Context ) : WareService {
         val resCode = jsonRes.getInt(JSON_ERROR_CODE)
         return if (resCode == RESPONSE_OK){
 
-            val id = jsonRes.getInt("towID")
+            val towID = jsonRes.getInt("towID")
+            val lokalizacja = jsonRes.getString("lokalizacja")
             val indeks = jsonRes.getString("indeks")
             val nazwa = jsonRes.getString("nazwa")
             val isFoto = jsonRes.getBoolean("isFoto")
+            val cena = jsonRes.getDouble("cena")
+            val stanyMagaz = jsonRes.getJSONArray("stanyMagaz")
 
-            Ware(qrCode, id, indeks, nazwa, isFoto)
+            val availabilities = ArrayList<Availability>()
+
+            for (i in 0 until stanyMagaz.length()){
+                val json = stanyMagaz.getJSONObject(i)
+
+                val id = json.getInt("id")
+                val magazyn = json.getString("magazyn")
+                val ilosc = json.getDouble("ilosc")
+
+                availabilities.add(Availability(id, magazyn, ilosc))
+            }
+
+            val ware = Ware(qrCode, towID, indeks, nazwa, isFoto, lokalizacja, cena)
+            ware.availabilities = availabilities
+
+            ware
 
         }else{
             lastError = jsonRes.getString(JSON_ERROR_DESC)
@@ -72,6 +144,7 @@ class WareServiceImpl(private val context : Context ) : WareService {
 
 
     }
+
 
     private fun getQRSearchJSON(qrCode : String, token: String): String{
         val jsonObj = JSONObject()

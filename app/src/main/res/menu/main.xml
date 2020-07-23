@@ -6,6 +6,6 @@
           android:orderInCategory="1"
           app:showAsAction="never"/>
     <item
-            android:id="@+id/nav_logout"
+            android:id="@+id/action_logout"
             android:title="Wyloguj" android:orderInCategory="2"/>
 </menu>

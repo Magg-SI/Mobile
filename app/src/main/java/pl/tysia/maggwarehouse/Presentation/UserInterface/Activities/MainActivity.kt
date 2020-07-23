@@ -18,18 +18,20 @@ import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
-import pl.tysia.maggwarehouse.R
 import pl.tysia.maggwarehouse.BusinessLogic.Domain.User
-import pl.tysia.maggwarehouse.BusinessLogic.NetAddressManager
-import pl.tysia.maggwarehouse.Presentation.UserInterface.Fragments.DialogFragmentPassword
-
-
+import pl.tysia.maggwarehouse.Presentation.UserInterface.Fragments.OrdersFragment
+import pl.tysia.maggwarehouse.Presentation.UserInterface.Fragments.ProductsScanFragment
+import pl.tysia.maggwarehouse.R
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private val MY_CAMERA_REQUEST_CODE = 100
-
+    companion object{
+        private const val MY_CAMERA_REQUEST_CODE = 100
+        private const  val SCANNER_REQUEST_CODE_PICTURE = 123
+        private const  val SCANNER_REQUEST_CODE_INFO = 124
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +39,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         PreferenceManager.setDefaultValues(this, R.xml.pref_address, false)
-/*
+
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar,
             R.string.navigation_drawer_open,
@@ -46,7 +48,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        nav_view.setNavigationItemSelectedListener(this)*/
+        nav_view.setNavigationItemSelectedListener(this)
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, ProductsScanFragment.newInstance())
+            .commit()
 
     }
 
@@ -54,7 +61,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == MY_CAMERA_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                val intent = Intent(this@MainActivity, ScannerActivity::class.java)
+                val intent = Intent(this@MainActivity, WareScannerActivity::class.java)
                 startActivity(intent)
             } else {
             }
@@ -69,12 +76,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ActivityCompat.requestPermissions(this, arr , MY_CAMERA_REQUEST_CODE)
 
         }else{
-            val intent = Intent(this@MainActivity, ScannerActivity::class.java)
+            val intent = Intent(this@MainActivity, WareScannerActivity::class.java)
             startActivity(intent)
 
         }
 
     }
+
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -92,7 +100,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (name_tv!= null)
             name_tv.text = user?.login
-        //locker_tv.text = getString(R.string.nav_bar_locker_nr, user?.locker)
         return true
     }
 
@@ -100,17 +107,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.action_settings -> {
                 val intent = Intent(this@MainActivity, SettingsActivity::class.java)
                 startActivity(intent)
-                return true
+                true
             }
-            R.id.nav_logout -> {
+            R.id.action_logout -> {
                 logout()
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -118,36 +125,45 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun logout(){
         val builder = AlertDialog.Builder(this@MainActivity)
         builder.setMessage(getString(R.string.confirm_logout)).
-            setPositiveButton("Tak", DialogInterface.OnClickListener { dialog, whichButton ->
+            setPositiveButton("Tak") { dialog, _ ->
                 User.logout(applicationContext)
                 dialog.dismiss()
                 val intent = Intent(this@MainActivity, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
-        })
-            .setNegativeButton("Nie", DialogInterface.OnClickListener { dialog, whichButton ->
-            dialog.dismiss()
-        })
+            }
+            .setNegativeButton("Nie") { dialog, _ ->
+                dialog.dismiss()
+            }
             .show()
     }
 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_catalog -> {
+            R.id.nav_collect -> {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, OrdersFragment.newInstance())
+                    .commit()
             }
 
-            R.id.nav_logout -> {
-                logout()
+            R.id.nav_locations -> {
+                val returnIntent = Intent(this, ShelfScannerActivity::class.java)
+                startActivity(returnIntent)
             }
 
-            R.id.nav_change_password -> {
-                val fragmentManager = supportFragmentManager
-                DialogFragmentPassword.newInstance(getString(R.string.password_confirmation_order)).show(fragmentManager, "TAG_DOC_CHOOSE_FRAGMENT")
+            R.id.nav_product_info -> {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, ProductsScanFragment.newInstance())
+                    .commit()
+
             }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
+
 }

@@ -3,10 +3,7 @@ package pl.tysia.maggwarehouse.Persistance
 import android.content.Context
 import org.json.JSONObject
 import pl.tysia.maggwarehouse.BusinessLogic.Domain.User
-import pl.tysia.maggwarehouse.BusinessLogic.NetAddressManager
 import pl.tysia.maggwarehouse.Persistance.Connection.URLConnectionManagerImpl
-import java.io.IOException
-import java.net.URL
 
 class LoginServiceImpl(private val context : Context) : LoginService {
     private val connectionManager = URLConnectionManagerImpl()

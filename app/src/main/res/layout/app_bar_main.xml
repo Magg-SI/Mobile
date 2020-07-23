@@ -18,12 +18,12 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
         <View
                 android:id="@+id/divider3"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
-                android:background="@color/colorAccent"
-                android:layout_marginLeft="8dp" android:layout_marginRight="8dp"/>
+                android:background="@color/colorAccent" />
 
     </android.support.design.widget.AppBarLayout>
 

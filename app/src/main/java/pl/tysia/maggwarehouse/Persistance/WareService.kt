@@ -11,4 +11,9 @@ interface WareService {
     fun sendPhoto(ware: Ware, token : String): Boolean
     @Throws (IOException::class)
     fun getPhoto(id : Int, token : String) : Bitmap?
+    @Throws (IOException::class)
+    fun sendWare(wareCode : String, locationCode : String, token : String) : Boolean
+
+    @Throws (IOException::class)
+    fun testShelf(locationCode : String, token : String) : Boolean
 }

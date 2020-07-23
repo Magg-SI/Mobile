@@ -15,12 +15,13 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import pl.tysia.maggwarehouse.BusinessLogic.Domain.User;
 import pl.tysia.maggwarehouse.BusinessLogic.Domain.Ware;
+import pl.tysia.maggwarehouse.Persistance.WareService;
 import pl.tysia.maggwarehouse.Persistance.WareServiceImpl;
 import pl.tysia.maggwarehouse.R;
 
 import java.io.IOException;
 
-public class ScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+public class WareScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
     private ZXingScannerView mScannerView;
 
@@ -64,7 +65,7 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
     }
 
     private void returnWare(Ware ware){
-        Intent returnIntent = new Intent(this, WareEditorActivity.class);
+        Intent  returnIntent = new Intent(this, WareInfoActivity.class);
         returnIntent.putExtra("scanner_result",ware);
         //setResult(1, returnIntent);
         startActivity(returnIntent);
@@ -121,11 +122,11 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
                 finish();
                 okDialog(getString(R.string.connection_error), getString(R.string.connectoin_error_long_message));
             }else{
-                Toast.makeText(ScannerActivity.this,
+                Toast.makeText(WareScannerActivity.this,
                         getString(R.string.product_couldnt_be_found_toast_with_reason,
                                 wareService.getLastError()), Toast.LENGTH_LONG)
                         .show();
-                mScannerView.resumeCameraPreview(ScannerActivity.this);
+                mScannerView.resumeCameraPreview(WareScannerActivity.this);
             }
         }
 

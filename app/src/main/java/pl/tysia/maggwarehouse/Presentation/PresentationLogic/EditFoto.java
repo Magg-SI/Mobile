@@ -81,8 +81,8 @@ public class EditFoto extends View {
         mode=amod;
         if(mode==2) {
             setMainRect();
-            liczMale();
-            liczLupa();
+            countSmallRects();
+            countZoom();
         }
         invalidate();
     }
@@ -99,7 +99,7 @@ public class EditFoto extends View {
             mainRect.right = maxRect.right;
             mainRect.bottom   = maxRect.bottom;
             setMainRect();
-            liczLupa();
+            countZoom();
         }
         wynikRect = new Rect(0,0, bmpRectSel.width(), bmpRectSel.height());
         bitmapOut = Bitmap.createBitmap(bmpRectSel.width(), bmpRectSel.height(), Bitmap.Config.ARGB_8888);
@@ -122,7 +122,7 @@ public class EditFoto extends View {
         else if(typMoving==4) movingBottom();
         else movingRect();
 
-        liczMale();
+        countSmallRects();
         invalidate();
     }
     private void movingBmp() {
@@ -135,28 +135,28 @@ public class EditFoto extends View {
         if(mainRect.width()<minSize.x) mainRect.left = mainRect.right-minSize.x;
         if (mainRect.left < maxRect.left) mainRect.left = maxRect.left;
         if (mainRect.left < bmpRectView.left) mainRect.left = bmpRectView.left;
-        liczLupa();
+        countZoom();
     }
     private void movingTop() {
         mainRect.top = movedRect.top + moveEnd.y - moveStart.y;
         if(mainRect.height()<minSize.y) mainRect.top = mainRect.bottom-minSize.y;
         if (mainRect.top < maxRect.top) mainRect.top = maxRect.top;
         if (mainRect.top  < bmpRectView.top) mainRect.top  = bmpRectView.top;
-        liczLupa();
+        countZoom();
     }
     private void movingRight() {
         mainRect.right = movedRect.right + moveEnd.x - moveStart.x;
         if(mainRect.width()<minSize.x) mainRect.right = mainRect.left+minSize.x;
         if (mainRect.right > maxRect.right) mainRect.right = maxRect.right;
         if (mainRect.right > bmpRectView.right) mainRect.right = bmpRectView.right;
-        liczLupa();
+        countZoom();
     }
     private void movingBottom() {
         mainRect.bottom = movedRect.bottom + moveEnd.y - moveStart.y;
         if(mainRect.height()<minSize.y) mainRect.bottom = mainRect.top+minSize.y;
         if (mainRect.bottom > maxRect.bottom) mainRect.bottom = maxRect.bottom;
         if (mainRect.bottom > bmpRectView.bottom) mainRect.bottom = bmpRectView.bottom;
-        liczLupa();
+        countZoom();
     }
     private void movingRect() {
         mainRect.left = movedRect.left + moveEnd.x - moveStart.x;
@@ -174,7 +174,7 @@ public class EditFoto extends View {
         mainRect.right = mainRect.left + movedRect.width();
         mainRect.bottom = mainRect.top  + movedRect.height();
 
-        liczLupa();
+        countZoom();
     }
     private void scaleBmpRect() {
         int szer  = Math.round(mScaleBmp*bmpRectStart.width());
@@ -218,9 +218,11 @@ public class EditFoto extends View {
         if (mainRect.right > bmpRectView.right) mainRect.right = bmpRectView.right;
         if (mainRect.bottom  > bmpRectView.bottom) mainRect.bottom  = bmpRectView.bottom;
 
-        liczMale();
-        liczLupa();
+        countSmallRects();
+        countZoom();
     }
+
+
     private void init() {
         mScaleBmp = 1.0f;
         mScaleRect = 1.0f;
@@ -267,7 +269,7 @@ public class EditFoto extends View {
         minSize = new Point(maxRect.width()/4, maxRect.width()/4);
         movedBmp = new Point();
         centerBmp = new Point((maxRect.right + maxRect.left) / 2, (maxRect.bottom + maxRect.top) / 2);
-        liczMale();
+        countSmallRects();
     }
 
     private void resizeBmp() {
@@ -294,51 +296,53 @@ public class EditFoto extends View {
         bmpRectView = new Rect(bmpRectStart);
         bmpRectSel = new Rect(bmpRectSrc);
     }
-    private void liczMale() {
-        Point srodek = new Point(mainRect.left+(mainRect.width()/2), mainRect.top+(mainRect.height()/2));
-        liczMaleOne(rectLeft,mainRect.left, srodek.y, 1);
-        liczMaleOne(rectTop,srodek.x ,mainRect.top, 2);
-        liczMaleOne(rectRight,mainRect.right, srodek.y, 3);
-        liczMaleOne(rectBottom,srodek.x ,mainRect.bottom, 4);
+
+    private void countSmallRects() {
+        Point middle = new Point(mainRect.left+(mainRect.width()/2), mainRect.top+(mainRect.height()/2));
+        countSmallRect(rectLeft,mainRect.left, middle.y, 1);
+        countSmallRect(rectTop,middle.x ,mainRect.top, 2);
+        countSmallRect(rectRight,mainRect.right, middle.y, 3);
+        countSmallRect(rectBottom,middle.x ,mainRect.bottom, 4);
     }
-    private void liczMaleOne(Rect rectM, int x, int y, int typ) {
-        int rozmiar=(int)(maxRect.width()/50);
+
+    private void countSmallRect(Rect rectM, int x, int y, int type) {
+        int size=(int)(maxRect.width()/50);
         int mnozLine=11;
         int mnozOut=5;
         int mnozIn=4;
 
-        rectM.left = x-rozmiar;
-        rectM.top = y-rozmiar;
-        rectM.right = x+rozmiar;
-        rectM.bottom = y+rozmiar;
+        rectM.left = x-size;
+        rectM.top = y-size;
+        rectM.right = x+size;
+        rectM.bottom = y+size;
 
-        if(typ==1) {
-            rectLeftT.left = x - mnozOut * rozmiar;
-            rectLeftT.top = y - mnozLine * rozmiar;
-            rectLeftT.right = x + mnozIn * rozmiar;
-            rectLeftT.bottom = y + mnozLine * rozmiar;
+        if(type==1) {
+            rectLeftT.left = x - mnozOut * size;
+            rectLeftT.top = y - mnozLine * size;
+            rectLeftT.right = x + mnozIn * size;
+            rectLeftT.bottom = y + mnozLine * size;
         }
-        else if(typ==2) {
-            rectTopT.left = x - mnozLine * rozmiar;
-            rectTopT.top = y - mnozOut * rozmiar;
-            rectTopT.right = x + mnozLine * rozmiar;
-            rectTopT.bottom = y + mnozIn * rozmiar;
+        else if(type==2) {
+            rectTopT.left = x - mnozLine * size;
+            rectTopT.top = y - mnozOut * size;
+            rectTopT.right = x + mnozLine * size;
+            rectTopT.bottom = y + mnozIn * size;
         }
-        else if(typ==3) {
-            rectRightT.left = x - mnozIn * rozmiar;
-            rectRightT.top = y - mnozLine * rozmiar;
-            rectRightT.right = x + mnozOut * rozmiar;
-            rectRightT.bottom = y + mnozLine * rozmiar;
+        else if(type==3) {
+            rectRightT.left = x - mnozIn * size;
+            rectRightT.top = y - mnozLine * size;
+            rectRightT.right = x + mnozOut * size;
+            rectRightT.bottom = y + mnozLine * size;
         }
-        else if(typ==4) {
-            rectBottomT.left = x - mnozLine * rozmiar;
-            rectBottomT.top = y - mnozIn * rozmiar;
-            rectBottomT.right = x + mnozLine * rozmiar;
-            rectBottomT.bottom = y + mnozOut * rozmiar;
+        else if(type==4) {
+            rectBottomT.left = x - mnozLine * size;
+            rectBottomT.top = y - mnozIn * size;
+            rectBottomT.right = x + mnozLine * size;
+            rectBottomT.bottom = y + mnozOut * size;
         }
     }
 
-    private void liczLupa() {
+    private void countZoom() {
 
         double left = (1.0 * (mainRect.left - bmpRectView.left)) / (1.0 * bmpRectView.width());
         double right = (1.0 * (mainRect.right - bmpRectView.left)) / (1.0 * bmpRectView.width());
@@ -356,9 +360,10 @@ public class EditFoto extends View {
         if (mainRect.top  < bmpRectView.top) mainRect.top  = bmpRectView.top;
         if (mainRect.right > bmpRectView.right) mainRect.right = bmpRectView.right;
         if (mainRect.bottom  > bmpRectView.bottom) mainRect.bottom   = bmpRectView.bottom;
-        liczMale();
+        countSmallRects();
     }
-    private void testMoveTyp() {
+
+    private void testMoveType() {
         if(mode==1) typMoving=0;
         else if(rectLeftT.contains(moveStart.x,moveStart.y)) typMoving=1;
         else if(rectTopT.contains(moveStart.x,moveStart.y)) typMoving=2;
@@ -366,6 +371,7 @@ public class EditFoto extends View {
         else if(rectBottomT.contains(moveStart.x,moveStart.y)) typMoving=4;
         else typMoving=0;
     }
+
     private void onTouchEventSized(MotionEvent event) {
 
         switch (event.getActionMasked()) {
@@ -382,7 +388,7 @@ public class EditFoto extends View {
 
                 moveStart.x = (int) event.getX();
                 moveStart.y = (int) event.getY();
-                testMoveTyp();
+                testMoveType();
                 break;
 
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -410,6 +416,7 @@ public class EditFoto extends View {
                 break;
         }
     }
+
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector scaleGestureDetector){
@@ -428,6 +435,7 @@ public class EditFoto extends View {
             return true;
         }
     }
+
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onDoubleTapEvent(MotionEvent event) {

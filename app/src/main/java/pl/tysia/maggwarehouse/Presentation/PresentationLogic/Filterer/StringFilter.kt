@@ -9,7 +9,7 @@ class StringFilter(var filteredString : String?) : Filter<ICatalogable>(){
         return if (filteredString == null)
             true
         else
-            item.getTitle().toLowerCase().contains(filteredString!!.toLowerCase())
+            item.title.toLowerCase().contains(filteredString!!.toLowerCase())
     }
 
 }
