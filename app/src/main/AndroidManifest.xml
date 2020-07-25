@@ -20,6 +20,7 @@
                 android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".Presentation.UserInterface.Activities.OrderedWaresActivity" />
         <activity android:name=".Presentation.UserInterface.Activities.ShelfScannerActivity" />
+        <activity android:name=".Presentation.UserInterface.Activities.WaresScannerActivity" />
         <activity android:name=".Presentation.UserInterface.Activities.WareInfoActivity" />
         <activity
                 android:name=".Presentation.UserInterface.Activities.SettingsActivity"

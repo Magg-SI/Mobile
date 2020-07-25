@@ -1,7 +1,6 @@
 package pl.tysia.maggwarehouse.Presentation.UserInterface.Activities
 
 import android.Manifest
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -18,9 +17,9 @@ import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import pl.tysia.maggwarehouse.BusinessLogic.Domain.User
+import pl.tysia.maggwarehouse.BusinessLogic.Domain.Ware
 import pl.tysia.maggwarehouse.Presentation.UserInterface.Fragments.OrdersFragment
 import pl.tysia.maggwarehouse.Presentation.UserInterface.Fragments.ProductsScanFragment
 import pl.tysia.maggwarehouse.R
@@ -29,8 +28,7 @@ import pl.tysia.maggwarehouse.R
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     companion object{
         private const val MY_CAMERA_REQUEST_CODE = 100
-        private const  val SCANNER_REQUEST_CODE_PICTURE = 123
-        private const  val SCANNER_REQUEST_CODE_INFO = 124
+        const  val SCANNER_REQUEST_CODE = 123
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,6 +87,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        //super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == 1 && requestCode == SCANNER_REQUEST_CODE){
+            val ware = data!!.getSerializableExtra(WareInfoActivity.WARE_EXTRA) as Ware
+
+            val returnIntent = Intent(this, WareInfoActivity::class.java)
+            returnIntent.putExtra(WareInfoActivity.WARE_EXTRA, ware)
+            startActivity(returnIntent)
         }
     }
 

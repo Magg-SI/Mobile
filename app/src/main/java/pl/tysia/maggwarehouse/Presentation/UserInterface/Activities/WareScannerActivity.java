@@ -65,10 +65,10 @@ public class WareScannerActivity extends AppCompatActivity implements ZXingScann
     }
 
     private void returnWare(Ware ware){
-        Intent  returnIntent = new Intent(this, WareInfoActivity.class);
-        returnIntent.putExtra("scanner_result",ware);
-        //setResult(1, returnIntent);
-        startActivity(returnIntent);
+        Intent returnIntent = getIntent();
+        returnIntent.putExtra(WareInfoActivity.WARE_EXTRA, ware);
+        setResult(1, returnIntent);
+
         finish();
     }
 

@@ -86,6 +86,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="0"
                     android:gravity="center"
+                    android:onClick="onScanWareClicked"
                     android:text="Skanuj produkt"
                     android:textColor="@android:color/white"
                     android:textSize="14sp" />

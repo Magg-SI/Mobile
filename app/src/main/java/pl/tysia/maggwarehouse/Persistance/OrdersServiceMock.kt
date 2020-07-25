@@ -15,7 +15,11 @@ class OrdersServiceMock : OrdersService {
     override fun getOrder(token: String, orderId : Int): ArrayList<OrderedWare> {
         return ArrayList<OrderedWare>().apply {
             for(i in 0..10)
-                add(OrderedWare(i, "Indeks $i", "Produkt $i", "Lokalizacja $i", i.toDouble(), i.toDouble(), i.toDouble(), i.toDouble(), (i*10).toDouble()))
+                add(OrderedWare(i, "Indeks $i", "Produkt $i", "Lokalizacja $i","qrCode$i" ,i.toDouble(), i.toDouble(), i.toDouble(), i.toDouble(), (i*10).toDouble()))
         }
+    }
+
+    override fun packOrder(token: String, orderedWare: OrderedWare): Boolean {
+        return true
     }
 }

@@ -22,6 +22,8 @@ import kotlinx.android.synthetic.main.activity_ordered_products.*
 import pl.tysia.maggwarehouse.BusinessLogic.Domain.Order
 import pl.tysia.maggwarehouse.BusinessLogic.Domain.OrderedWare
 import pl.tysia.maggwarehouse.BusinessLogic.Domain.User
+import pl.tysia.maggwarehouse.BusinessLogic.Domain.Ware
+import pl.tysia.maggwarehouse.Persistance.OrdersServiceImpl
 import pl.tysia.maggwarehouse.Persistance.OrdersServiceMock
 import pl.tysia.maggwarehouse.Presentation.PresentationLogic.CatalogAdapter.CatalogAdapter
 import pl.tysia.maggwarehouse.Presentation.PresentationLogic.CatalogAdapter.BasicCatalogAdapter
@@ -110,6 +112,24 @@ class OrderedWaresActivity : AppCompatActivity() , CatalogAdapter.ItemSelectedLi
 
     }
 
+    public fun onScanWareClicked(view: View){
+        val returnIntent = Intent(this, WareScannerActivity::class.java)
+        startActivityForResult(returnIntent, MainActivity.SCANNER_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == 1 && requestCode == MainActivity.SCANNER_REQUEST_CODE){
+            val ware = data!!.getSerializableExtra(WareInfoActivity.WARE_EXTRA) as Ware
+
+            adapter.allItems.forEach { orderedWare ->
+                if ((orderedWare as OrderedWare).qrCode == ware.qrCode)
+                    onItemSelected(orderedWare)
+            }
+        }
+    }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private fun showProgress(show: Boolean) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -141,7 +161,7 @@ class OrderedWaresActivity : AppCompatActivity() , CatalogAdapter.ItemSelectedLi
 
     inner class GetOrderedWaresTask internal constructor() :
         AsyncTask<String, String, ArrayList<OrderedWare>>() {
-        private val ordersService = OrdersServiceMock()
+        private val ordersService = OrdersServiceImpl(this@OrderedWaresActivity)
         private var exceptionOccurred = false
 
 

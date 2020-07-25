@@ -57,29 +57,46 @@
                 android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="8dp" android:layout_margin="16dp" android:textSize="24sp"
                 android:textColor="@android:color/black" android:alpha="0.8"/>
+
         <LinearLayout
-                android:orientation="horizontal"
+                android:id="@+id/linearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" android:id="@+id/linearLayout">
+                android:orientation="horizontal"
+                android:padding="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
             <Button
-                    android:text="@string/take_pictue_button"
+                    android:id="@+id/take_picture_button"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/take_picture_button" android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="36dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_button_dark"
+                    android:onClick="takePicture"
+                    android:text="@string/take_pictue_button"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="8dp" style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:onClick="takePicture" app:layout_constraintEnd_toStartOf="@+id/button3"
-                    android:layout_weight="1" android:textSize="18sp"/>
+                    app:layout_constraintEnd_toStartOf="@+id/button3"
+                    app:layout_constraintStart_toStartOf="parent" />
+
             <Button
-                    android:text="@string/Save"
+                    android:id="@+id/button3"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" tools:layout_editor_absoluteY="675dp"
-                    android:id="@+id/button3" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored" android:layout_weight="1"
-                    android:onClick="attemptSave" android:textSize="18sp"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_button"
+                    android:onClick="attemptSave"
+                    android:text="@string/Save"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:layout_editor_absoluteY="675dp" />
         </LinearLayout>
 
 

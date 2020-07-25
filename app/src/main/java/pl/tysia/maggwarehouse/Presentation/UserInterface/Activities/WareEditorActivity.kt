@@ -56,7 +56,7 @@ class WareEditorActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_ware_editor)
 
-        ware = intent.getSerializableExtra("scanner_result") as Ware
+        ware = intent.getSerializableExtra(WareInfoActivity.WARE_EXTRA) as Ware
         product_name.text = ware.name
         product_index.text = ware.index
 

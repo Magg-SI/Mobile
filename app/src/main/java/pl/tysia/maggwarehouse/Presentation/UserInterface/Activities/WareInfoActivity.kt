@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.provider.Settings.Global.getString
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_ware_info.*
@@ -19,11 +20,15 @@ import java.io.IOException
 class WareInfoActivity : AppCompatActivity() {
     private lateinit var ware : Ware
 
+    companion object{
+        const val WARE_EXTRA = "pl.tysia.maggwarehouse.ware_extra"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ware_info)
 
-        ware  = intent.getSerializableExtra("ware_extra") as Ware
+        ware  = intent.getSerializableExtra(WARE_EXTRA) as Ware
 
         name_tv.text = ware.name
         location_tv.text = ware.location
@@ -41,6 +46,14 @@ class WareInfoActivity : AppCompatActivity() {
             stringBuilder.append(availability.count)
 
             textView.text = stringBuilder.toString()
+            textView.textSize = 14f
+
+            availability_ll.addView(textView)
+
+            val param = textView.layoutParams as ViewGroup.MarginLayoutParams
+            param.setMargins(0,8,8,8)
+            textView.layoutParams = param
+
             stringBuilder.clear()
 
         }
@@ -51,9 +64,8 @@ class WareInfoActivity : AppCompatActivity() {
     }
 
     fun onAddPhotoClicked(view : View){
-        val ware = intent.getSerializableExtra("scanner_result")
         var returnIntent = Intent(this, WareEditorActivity::class.java)
-        returnIntent?.putExtra("ware_extra", ware)
+        returnIntent?.putExtra(WARE_EXTRA, ware)
         startActivity(returnIntent);
 
     }

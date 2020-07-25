@@ -149,7 +149,7 @@ class WareServiceImpl(private val context : Context ) : WareService {
     private fun getQRSearchJSON(qrCode : String, token: String): String{
         val jsonObj = JSONObject()
 
-        jsonObj.put("func", "findQR")
+        jsonObj.put("func", "findTowar")
         jsonObj.put("token",  token)
         jsonObj.put("QR" , qrCode)
 

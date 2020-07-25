@@ -13,7 +13,7 @@ import pl.tysia.maggwarehouse.Presentation.PresentationLogic.Filterer.Filterer;
 
 public abstract class CatalogAdapter<T extends ICatalogable> extends RecyclerView.Adapter<CatalogAdapter.CatalogItemViewHolder> {
     protected ArrayList<T> shownItems;
-    protected ArrayList<T> allItems;
+    public ArrayList<T> allItems;
 
     protected Filterer filterer;
 

@@ -10,7 +10,10 @@ data class Order(var id: Int, var warehouse: String, var documentDate: String, v
     override fun getTitle() = "Zamówienie nr $documentNr z dnia $documentDate"
 
     override fun getShortDescription(): String {
-        return "Magazyn: $warehouse\n$comments"
+        var res =  "Magazyn: $warehouse"
+        if (comments != "null") res += comments
+
+        return res
     }
 
     override fun getImage(): Bitmap? {

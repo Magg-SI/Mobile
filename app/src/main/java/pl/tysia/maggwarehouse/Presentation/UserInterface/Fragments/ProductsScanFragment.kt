@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import pl.tysia.maggwarehouse.Presentation.UserInterface.Activities.MainActivity
 import pl.tysia.maggwarehouse.Presentation.UserInterface.Activities.WareScannerActivity
 
 import pl.tysia.maggwarehouse.R
@@ -44,7 +45,7 @@ class ProductsScanFragment : Fragment() {
 
         back.setOnClickListener {
             val returnIntent = Intent(activity, WareScannerActivity::class.java)
-            startActivity(returnIntent)
+            activity!!.startActivityForResult(returnIntent, MainActivity.SCANNER_REQUEST_CODE)
         }
 
         return thisView

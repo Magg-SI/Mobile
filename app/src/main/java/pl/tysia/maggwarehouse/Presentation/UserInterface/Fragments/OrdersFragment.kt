@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import pl.tysia.maggwarehouse.BusinessLogic.Domain.Order
 import pl.tysia.maggwarehouse.BusinessLogic.Domain.User
 import pl.tysia.maggwarehouse.Persistance.OrdersService
+import pl.tysia.maggwarehouse.Persistance.OrdersServiceImpl
 import pl.tysia.maggwarehouse.Persistance.OrdersServiceMock
 import pl.tysia.maggwarehouse.Presentation.PresentationLogic.CatalogAdapter.BasicCatalogAdapter
 import pl.tysia.maggwarehouse.Presentation.PresentationLogic.CatalogAdapter.CatalogAdapter
@@ -152,9 +153,8 @@ open class OrdersFragment : Fragment() , CatalogAdapter.ItemSelectedListener<Ord
 
     inner class GetOrdersTask internal constructor() :
         AsyncTask<String, String, ArrayList<Order>>() {
-        private val ordersService = OrdersServiceMock()
+        private val ordersService = OrdersServiceImpl(activity!!)
         private var exceptionOccurred = false
-
 
         override fun doInBackground(vararg params: String): ArrayList<Order>? {
 
@@ -195,7 +195,6 @@ open class OrdersFragment : Fragment() , CatalogAdapter.ItemSelectedListener<Ord
                         .show()
                 }
             }
-
         }
 
         override fun onCancelled() {
