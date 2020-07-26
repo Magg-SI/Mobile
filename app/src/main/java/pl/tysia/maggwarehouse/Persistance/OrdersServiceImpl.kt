@@ -76,10 +76,19 @@ class OrdersServiceImpl(context: Context) : OrdersService {
             val jsonObject = jsonArray.getJSONObject(i)
 
             val pozyID = jsonObject.getInt("pozyID")
-            val indeks = jsonObject.optString("indeks", "brak")
-            val nazwa = jsonObject.optString("nazwa", "brak")
-            val lokalizacja = jsonObject.optString("lokalizacja", "brak")
-            val kodQR = jsonObject.optString("kodQR", "brak")
+
+            val indeks = if (!jsonObject.isNull("indeks"))
+                jsonObject.optString("indeks", "brak") else "brak indeksu"
+
+            val nazwa = if (!jsonObject.isNull("nazwa"))
+                jsonObject.optString("nazwa", "brak") else "brak nazwy"
+
+            val lokalizacja = if (!jsonObject.isNull("lokalizacja"))
+                jsonObject.optString("lokalizacja", "brak") else "brak lokalizacji"
+
+            val kodQR = if (!jsonObject.isNull("kodQR"))
+                jsonObject.optString("kodQR", "brak") else "brak kodu QR"
+
             val ilZamow = jsonObject.optDouble("ilZamow", 0.0)
             val ilZapak = jsonObject.optDouble("ilZapak", 0.0)
             val ilNext = jsonObject.optDouble("ilNext", 0.0)

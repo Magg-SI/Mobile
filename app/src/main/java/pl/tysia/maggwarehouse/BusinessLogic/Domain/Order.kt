@@ -7,16 +7,16 @@ import java.io.Serializable
 data class Order(var id: Int, var warehouse: String, var documentDate: String, var documentNr: String, var comments: String)
     : ICatalogable, Serializable{
 
-    override fun getTitle() = "Zamówienie nr $documentNr z dnia $documentDate"
+    override fun getTitle() = "Zamówienie nr $documentNr \nz dnia $documentDate"
 
     override fun getShortDescription(): String {
-        var res =  "Magazyn: $warehouse"
-        if (comments != "null") res += comments
+        var res =  "Magazyn: $warehouse\n"
+        if (comments != "null") res += "\nUwagi: "+ comments
 
         return res
     }
 
-    override fun getImage(): Bitmap? {
-        return null
+    override fun isMarked(): Boolean {
+        return false
     }
 }

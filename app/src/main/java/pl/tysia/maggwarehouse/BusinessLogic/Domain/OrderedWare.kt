@@ -15,19 +15,19 @@ data class OrderedWare(var positionID: Int,
                        var cancelledNumber: Double,
                        var availability: Double) : ICatalogable, Serializable {
 
+    var marked = false
 
-    override fun getImage(): Bitmap? {
-        return null
+    override fun isMarked(): Boolean {
+        return marked || orderedNumber <= (packedNumber + postponedNumber + cancelledNumber)
     }
 
     override fun getShortDescription(): String {
         return "Nazwa towaru: $productName\n" +
-                "Liczba zamówionych: $orderedNumber"
+                "\nLiczba zamówionych: $orderedNumber"
     }
 
     override fun getTitle(): String {
-        return "Lokalizacja: $location\n" +
-                "Indeks: $index"
+        return "$index\n$location"
     }
 
 }

@@ -3,6 +3,7 @@ package pl.tysia.maggwarehouse.Presentation.UserInterface.Activities
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
+import android.app.Activity
 import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Build
@@ -170,8 +171,10 @@ class WareOrderingActivity : AppCompatActivity(), TextWatcher {
 
             when {
                 result == true -> {
-                    finish()
                     Toast.makeText(this@WareOrderingActivity, "Zapisano pomyślnie", Toast.LENGTH_LONG).show()
+
+                    setResult(Activity.RESULT_OK)
+                    finish()
                 }
                 exceptionOccurred -> okDialog(getString(R.string.connection_error), getString(R.string.connectoin_error_long_message), this@WareOrderingActivity)
                 else -> Toast.makeText(this@WareOrderingActivity, "Nie udało się zapisać", Toast.LENGTH_LONG).show()

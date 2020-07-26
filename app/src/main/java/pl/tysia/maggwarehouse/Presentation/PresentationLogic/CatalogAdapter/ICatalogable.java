@@ -7,6 +7,6 @@ import pl.tysia.maggwarehouse.Presentation.PresentationLogic.Filterer.IFilterabl
 public interface ICatalogable extends IFilterable {
     String getTitle();
     String getShortDescription();
-    Bitmap getImage();
+    boolean isMarked();
 
 }

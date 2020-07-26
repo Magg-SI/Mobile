@@ -35,8 +35,8 @@ data class Ware(var name: String) : ICatalogable, Serializable {
         return name
     }
 
-    override fun getImage(): Bitmap? {
-        return null
+    override fun isMarked(): Boolean {
+        return false
     }
 
     override fun getShortDescription(): String {

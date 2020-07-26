@@ -22,6 +22,7 @@ class WareInfoActivity : AppCompatActivity() {
 
     companion object{
         const val WARE_EXTRA = "pl.tysia.maggwarehouse.ware_extra"
+        const val EDIT_REQUEST = 122
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,13 +41,12 @@ class WareInfoActivity : AppCompatActivity() {
         for (availability in ware.availabilities!!){
             val textView = TextView(this)
 
-            stringBuilder.append("Magazyn: ")
             stringBuilder.append(availability.warehouse)
-            stringBuilder.append("Ilość: ")
+            stringBuilder.append(": ")
             stringBuilder.append(availability.count)
 
             textView.text = stringBuilder.toString()
-            textView.textSize = 14f
+            textView.textSize = 16f
 
             availability_ll.addView(textView)
 
@@ -59,6 +59,14 @@ class WareInfoActivity : AppCompatActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK && requestCode == EDIT_REQUEST)
+            ware.hasPhoto = true
+
+    }
+
     fun onBackClicked(view: View){
         finish()
     }
@@ -66,7 +74,7 @@ class WareInfoActivity : AppCompatActivity() {
     fun onAddPhotoClicked(view : View){
         var returnIntent = Intent(this, WareEditorActivity::class.java)
         returnIntent?.putExtra(WARE_EXTRA, ware)
-        startActivity(returnIntent);
+        startActivityForResult(returnIntent, EDIT_REQUEST)
 
     }
 

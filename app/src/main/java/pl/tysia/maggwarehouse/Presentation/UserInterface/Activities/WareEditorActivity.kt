@@ -5,6 +5,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -301,8 +302,10 @@ class WareEditorActivity : AppCompatActivity() {
                 result == true -> {
                     ware.photoPath = null
 
-                    finish()
                     Toast.makeText(this@WareEditorActivity, getString(R.string.product_added_toast), Toast.LENGTH_LONG).show()
+
+                    setResult(Activity.RESULT_OK)
+                    finish()
                 }
                 exceptionOccured -> okDialog(getString(R.string.connection_error), getString(R.string.connectoin_error_long_message))
                 else -> Toast.makeText(this@WareEditorActivity, getString(R.string.product_couldnt_be_found_toast_with_reason, wareService.lastError), Toast.LENGTH_LONG).show()

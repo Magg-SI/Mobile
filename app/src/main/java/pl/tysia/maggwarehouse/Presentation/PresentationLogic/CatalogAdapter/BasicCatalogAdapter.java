@@ -66,8 +66,17 @@ public class BasicCatalogAdapter extends CatalogAdapter<ICatalogable> {
         BasicViewHolder wareViewHolder = (BasicViewHolder) catalogItemViewHolder;
 
         wareViewHolder.title.setText(item.getTitle());
-        wareViewHolder.description.setText(item.getShortDescription());
 
+
+        if (item.isMarked()){
+            wareViewHolder.description.setText(item.getShortDescription() + "\nzapakowane");
+
+            wareViewHolder.title.setEnabled(false);
+            wareViewHolder.description.setEnabled(false);
+        }else{
+            wareViewHolder.description.setText(item.getShortDescription());
+
+        }
 
     }
 }

@@ -3,6 +3,7 @@ package pl.tysia.maggwarehouse.Presentation.UserInterface.Activities
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
+import android.app.Activity
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Build
@@ -49,6 +50,9 @@ class OrderedWaresActivity : AppCompatActivity() , CatalogAdapter.ItemSelectedLi
 
     companion object{
         public const val ORDER = "pl.tysia.maggwarehouse.order"
+
+        const val PACK_REQUEST = 124
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,20 +85,25 @@ class OrderedWaresActivity : AppCompatActivity() , CatalogAdapter.ItemSelectedLi
         order_desc_tv.text = order.shortDescription
         order_title_tv.text = order.title
 
+        showProgress(true)
 
-        if (getOrderedWaresTask == null){
-            showProgress(true)
-            getOrderedWaresTask = GetOrderedWaresTask()
-            getOrderedWaresTask?.execute()
-        }
+        getOrders()
 
 
     }
 
+    private fun getOrders(){
+        if (getOrderedWaresTask == null){
+            getOrderedWaresTask = GetOrderedWaresTask()
+            getOrderedWaresTask?.execute()
+        }
+    }
+
+
     override fun onItemSelected(item: OrderedWare?) {
         val intent = Intent(this@OrderedWaresActivity, WareOrderingActivity::class.java)
         intent.putExtra(WareOrderingActivity.ORDERED_WARE, item)
-        startActivity(intent)
+        startActivityForResult(intent, PACK_REQUEST)
     }
 
     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -127,6 +136,12 @@ class OrderedWaresActivity : AppCompatActivity() , CatalogAdapter.ItemSelectedLi
                 if ((orderedWare as OrderedWare).qrCode == ware.qrCode)
                     onItemSelected(orderedWare)
             }
+        }else if (resultCode == Activity.RESULT_OK && requestCode == PACK_REQUEST){
+            (adapter.selectedItem as OrderedWare).marked = true
+            adapter.notifyDataSetChanged()
+
+            getOrders()
+
         }
     }
 
@@ -184,6 +199,7 @@ class OrderedWaresActivity : AppCompatActivity() , CatalogAdapter.ItemSelectedLi
 
             when {
                 result != null -> {
+                    adapter.allItems.clear()
                     adapter.addAll(result as Collection<ICatalogable>?)
                     adapter.filter()
                     adapter.notifyDataSetChanged()
