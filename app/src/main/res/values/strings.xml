@@ -55,6 +55,8 @@
     <string name="confirm_logout">Czy na pewno chcesz się wylogować?</string>
     <string name="Save">Zapisz</string>
     <string name="public_network_address">Adres sieci publicznej</string>
+    <string name="scan_on_demand">Skanowanie na żądanie</string>
+    <string name="scan_preference_summary">Wyłącza automatyczne skanowanie. \nKody są skanowane dopiero po wciśnięciu przycisku \"skanuj\".</string>
 
 
     <string-array name="pref_picture_size">

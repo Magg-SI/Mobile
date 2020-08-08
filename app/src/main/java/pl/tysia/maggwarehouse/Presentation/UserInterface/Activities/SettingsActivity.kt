@@ -108,6 +108,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             bindPreferenceSummaryToValue(findPreference("target_public_net_address"))
             bindPreferenceSummaryToValue(privateNetPref)
             bindPreferenceSummaryToValue(findPreference("picture_size"))
+            bindPreferenceSummaryToValue(findPreference("scan_on_demand"))
 
             val prefChangeListener = Preference.OnPreferenceChangeListener{ _, newVal ->
                 privateNetUsage.isEnabled = newVal != null && (newVal as String).isNotEmpty()
@@ -133,14 +134,14 @@ class SettingsActivity : AppCompatPreferenceActivity() {
         private val sBindPreferenceSummaryToValueListener = Preference.OnPreferenceChangeListener { preference, value ->
             val stringValue = value.toString()
 
-            if (preference is SwitchPreference) {
+            if (preference.key == "private_network_usage") {
                 preference.summary = if (value as Boolean) "Korzystanie z sieci prywatnej" else "Korzystanie z sieci firmowej"
 
             }else if (preference is ListPreference){
                 val index = preference.findIndexOfValue(stringValue)
                 preference.summary = preference.entryValues[index]
             }
-            else{
+            else if (preference is EditTextPreference){
                 preference.summary = stringValue
             }
             true

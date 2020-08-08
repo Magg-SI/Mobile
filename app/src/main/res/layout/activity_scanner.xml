@@ -7,6 +7,21 @@
     android:background="@color/colorPrimaryDark"
     tools:context=".Presentation.UserInterface.Activities.WareScannerActivity">
 
+    <Button
+            android:id="@+id/scanButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_background_black"
+            android:padding="16dp"
+            android:text="Skanuj"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     <FrameLayout
         android:id="@+id/cameraFrame"
         android:layout_width="0dp"

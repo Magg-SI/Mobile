@@ -16,4 +16,9 @@
             android:entries="@array/pref_picture_size"
             android:entryValues="@array/pref_picture_size_values" android:key="picture_size"
             android:inputType="number" android:id="@+id/picture_percent_pref"/>
+    <SwitchPreference
+            android:defaultValue="false"
+            android:key="scan_on_demand"
+            android:summary="@string/scan_preference_summary"
+            android:title="@string/scan_on_demand" />
 </PreferenceScreen>

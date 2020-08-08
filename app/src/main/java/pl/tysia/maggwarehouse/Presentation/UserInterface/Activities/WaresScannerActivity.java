@@ -3,9 +3,11 @@ package pl.tysia.maggwarehouse.Presentation.UserInterface.Activities;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,6 +29,9 @@ public class WaresScannerActivity extends AppCompatActivity implements ZXingScan
     private ZXingScannerView mScannerView;
     private TextView productTV;
 
+    private boolean scanOnDemand = false;
+    private boolean  isScanning = false;
+
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
@@ -39,6 +44,21 @@ public class WaresScannerActivity extends AppCompatActivity implements ZXingScan
 
         FrameLayout cameraFrame = findViewById(R.id.cameraFrame);
         cameraFrame.addView(mScannerView);
+
+        scanOnDemand = PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean("scan_on_demand", false);
+
+        Button scanButton = findViewById(R.id.scanButton);
+        if (scanOnDemand) {
+            scanButton.setVisibility(View.VISIBLE);
+            scanButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isScanning = true;
+                }
+            });
+        }
     }
 
     @Override
@@ -56,12 +76,18 @@ public class WaresScannerActivity extends AppCompatActivity implements ZXingScan
 
     @Override
     public void handleResult(Result rawResult) {
-        final String code = rawResult.getText();
+        if (isScanning || !scanOnDemand){
+            final String code = rawResult.getText();
 
-        showSendingState(true);
-        SendWareTask task = new SendWareTask(code);
+            showSendingState(true);
+            SendWareTask task = new SendWareTask(code);
 
-        task.execute();
+            task.execute();
+
+            isScanning = false;
+
+        }else mScannerView.resumeCameraPreview(this);
+
 
     }
 
