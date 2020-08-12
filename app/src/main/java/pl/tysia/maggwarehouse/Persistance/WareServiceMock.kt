@@ -5,11 +5,11 @@ import pl.tysia.maggwarehouse.BusinessLogic.Domain.Ware
 
 class WareServiceMock : WareService {
     override fun sendPhoto(ware: Ware, token: String): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return true
     }
 
     override fun getPhoto(id: Int, token: String): Bitmap? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return null
     }
 
     override fun sendWare(wareCode: String, locationCode: String, token: String): Boolean {
